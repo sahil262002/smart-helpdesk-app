@@ -9,13 +9,13 @@ const KbAdminPage = () => {
     const token = useAuthStore((state) => state.token);
     const setNotification = useNotificationStore((state) => state.setNotification);
 
-    // Simplified form state for creating/editing
+    
     const [form, setForm] = useState({ _id: null, title: '', body: '', tags: '', status: 'draft' });
 
     const fetchArticles = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            // Fetch all articles, not just published
+            
             const { data } = await axios.get('http://localhost:8080/api/kb/all', config); 
             setArticles(data);
         } catch (error) {
@@ -40,10 +40,10 @@ const KbAdminPage = () => {
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         try {
-            if (form._id) { // Update existing
+            if (form._id) { 
                 await axios.put(`http://localhost:8080/api/kb/${form._id}`, payload, config);
                 setNotification({ message: 'Article updated!', type: 'success' });
-            } else { // Create new
+            } else { 
                 await axios.post('http://localhost:8080/api/kb', payload, config);
                 setNotification({ message: 'Article created!', type: 'success' });
             }
@@ -83,14 +83,14 @@ const KbAdminPage = () => {
                     <h3>Articles</h3>
                     {loading ? <p>Loading...</p> : (
                         <table style={{width: '100%', borderCollapse: 'collapse'}}>
-                           {/* Table rendering of articles with edit/delete buttons */}
+                           {}
                         </table>
                     )}
                 </div>
                 <div>
                     <h3>{form._id ? 'Edit Article' : 'Create Article'}</h3>
                     <form onSubmit={handleFormSubmit}>
-                        {/* Form inputs for title, body, tags, status */}
+                        {}
                         <button type="submit">Save</button>
                         <button type="button" onClick={resetForm}>Cancel</button>
                     </form>

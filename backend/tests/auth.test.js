@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 
-// This is a simplified test setup. A full app test would import your actual server.
+
 const app = express();
 app.use(express.json());
 
-// A mock route for testing purposes
+
 app.post('/api/auth/register', (req, res) => {
     const { name, email, password } = req.body;
     if (name && email && password) {

@@ -1,4 +1,4 @@
-// frontend/src/pages/LoginPage.jsx
+
 
 import React, { useState } from 'react';
 import useAuthStore from '../store/authStore';
@@ -32,7 +32,7 @@ const LoginPage = () => {
               type="email" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
-              placeholder="you@example.com" // <-- ADD THIS
+              placeholder="you@example.com" 
               required 
               className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
             />
@@ -44,7 +44,7 @@ const LoginPage = () => {
               type="password" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
-              placeholder="••••••••" // <-- ADD THIS
+              placeholder="••••••••" 
               required 
               className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
             />

@@ -5,16 +5,16 @@ import { protect, agent } from '../middleware/auth.middleware.js';
 const router = express.Router();
 
 router.route('/')
-    .post(protect, createTicket) // [cite: 72]
-    .get(protect, getTickets); // [cite: 73]
+    .post(protect, createTicket) 
+    .get(protect, getTickets); 
 
 router.route('/:id')
-    .get(protect, getTicketById); // [cite: 74]
+    .get(protect, getTicketById); 
 
 router.route('/:id/reply')
-    .post(protect, agent, addReply); // [cite: 75]
+    .post(protect, agent, addReply); 
     
 router.route('/:id/audit')
-    .get(protect, agent, getAuditLogsForTicket); // [cite: 83]
+    .get(protect, agent, getAuditLogsForTicket); 
 
 export default router;

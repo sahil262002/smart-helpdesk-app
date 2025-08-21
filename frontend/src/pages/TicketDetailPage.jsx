@@ -42,7 +42,7 @@ const TicketDetailPage = () => {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             await axios.post(`http://localhost:8080/api/tickets/${id}/reply`, { reply: replyText }, config);
             setNotification({ message: 'Reply sent!', type: 'success' });
-            fetchTicketDetails(); // Refresh data
+            fetchTicketDetails(); 
         } catch (error) {
             setNotification({ message: 'Failed to send reply.', type: 'error' });
         } finally {

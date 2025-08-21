@@ -13,7 +13,7 @@ const AdminRoute = () => {
         return <Navigate to="/" />;
     }
 
-    // If all checks pass, render the admin component via <Outlet />
+    
     return <Outlet />;
 };
 

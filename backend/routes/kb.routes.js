@@ -5,12 +5,12 @@ import { protect, admin } from '../middleware/auth.middleware.js';
 const router = express.Router();
 
 router.route('/')
-    .get(protect, getArticles) // All authenticated users can search KB [cite: 68]
-    .post(protect, admin, createArticle); // [cite: 69]
+    .get(protect, getArticles) 
+    .post(protect, admin, createArticle); 
 
 router.route('/:id')
     .get(protect, getArticleById)
-    .put(protect, admin, updateArticle) // [cite: 71]
-    .delete(protect, admin, deleteArticle); // [cite: 71]
+    .put(protect, admin, updateArticle) 
+    .delete(protect, admin, deleteArticle); 
 
 export default router;

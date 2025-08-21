@@ -20,18 +20,15 @@ function App() {
         <Notifier />
         <main className="p-4 sm:p-6 lg:p-8">
           <Routes>
-            {/* Public Routes */}
+            
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            
-            {/* Protected User Routes */}
+          
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<TicketListPage />} />
               <Route path="/tickets/new" element={<NewTicketPage />} />
               <Route path="/tickets/:id" element={<TicketDetailPage />} />
             </Route>
-
-            {/* Protected Admin Routes */}
             <Route element={<AdminRoute />}>
               <Route path="/admin/kb" element={<KbAdminPage />} />
               <Route path="/admin/settings" element={<SettingsAdminPage />} />

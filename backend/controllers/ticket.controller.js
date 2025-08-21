@@ -24,7 +24,7 @@ export const createTicket = async (req, res) => {
 
 export const getTickets = async (req, res) => {
     try {
-        // A simple implementation: Admins/agents see all, users see their own.
+        
         const query = (req.user.role === 'user') ? { createdBy: req.user._id } : {};
         const tickets = await Ticket.find(query).sort({ createdAt: -1 });
         res.json(tickets);

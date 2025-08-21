@@ -6,17 +6,15 @@ import AuditLog from '../models/AuditLog.model.js';
 import Config from '../models/Config.model.js';
 import logger from '../utils/logger.js';
 
-// --- Deterministic LLM Stub Logic ---
 
-// 1. Classification based on keywords (IMPROVED)
 const classifyTicket = (title, description) => {
-    // Combine title and description for a better search context
+    
     const searchText = `${title.toLowerCase()} ${description.toLowerCase()}`;
     
     const billingKeywords = ["refund", "invoice", "charge", "payment", "bill", "subscription"];
     const techKeywords = [
-        "error", "bug", "stack", "login", "500", // Original keywords
-        "fault", "software", "windows", "not working", "crash", "issue", "feature", "api", "server" // New, smarter keywords
+        "error", "bug", "stack", "login", "500", 
+        "fault", "software", "windows", "not working", "crash", "issue", "feature", "api", "server" 
     ];
     const shippingKeywords = ["delivery", "shipment", "package", "tracking", "where is my order"];
 
@@ -36,7 +34,7 @@ const classifyTicket = (title, description) => {
     return { predictedCategory: 'other', confidence: 0.3 };
 };
 
-// 2. Retrieve KB articles using MongoDB's text search
+
 const retrieveKBArticles = async (query) => {
     const articles = await Article.find(
         { $text: { $search: query }, status: 'published' },
@@ -45,7 +43,7 @@ const retrieveKBArticles = async (query) => {
     return articles;
 };
 
-// 3. Draft a templated reply
+
 const draftReply = (articles) => {
     if (articles.length === 0) {
         return { draftReply: "Our team will look into your issue and get back to you shortly.", citations: [] };
@@ -54,7 +52,6 @@ const draftReply = (articles) => {
     return { draftReply: reply, citations: articles.map(a => a._id) };
 };
 
-// --- Main Triage Orchestrator ---
 
 export const triageTicket = async (ticketId) => {
     const traceId = uuidv4();
@@ -69,19 +66,19 @@ export const triageTicket = async (ticketId) => {
 
         await AuditLog.create({ ticketId, traceId, actor: 'system', action: 'AGENT_TRIAGE_STARTED' });
 
-        // Step 1: Classify (UPDATED to pass both title and description)
+       
         const classification = classifyTicket(ticket.title, ticket.description);
         await AuditLog.create({ ticketId, traceId, actor: 'system', action: 'AGENT_CLASSIFIED', meta: classification });
         
-        // Step 2: Retrieve KB
+        
         const relevantArticles = await retrieveKBArticles(ticket.title + ' ' + ticket.description);
         await AuditLog.create({ ticketId, traceId, actor: 'system', action: 'KB_RETRIEVED', meta: { count: relevantArticles.length, articleIds: relevantArticles.map(a => a._id) } });
 
-        // Step 3: Draft Reply
+        
         const { draftReply: reply, citations } = draftReply(relevantArticles);
         await AuditLog.create({ ticketId, traceId, actor: 'system', action: 'DRAFT_GENERATED', meta: { hasReply: !!reply } });
 
-        // Step 4: Decision
+        
         const config = await Config.getSingleton();
         const { confidence } = classification;
         let autoClosed = false;
@@ -89,8 +86,7 @@ export const triageTicket = async (ticketId) => {
         if (config.autoCloseEnabled && confidence >= config.confidenceThreshold) {
             autoClosed = true;
             ticket.status = 'resolved';
-            // In a real app, this reply would be stored in a separate `Reply` model,
-            // but for simplicity, we add it to the description.
+            
             ticket.description += `\n\n--- Auto-Reply ---\n${reply}`;
             await AuditLog.create({ ticketId, traceId, actor: 'system', action: 'AUTO_CLOSED' });
         } else {
@@ -100,7 +96,7 @@ export const triageTicket = async (ticketId) => {
         
         const latencyMs = Date.now() - startTime;
 
-        // Persist the suggestion
+        
         const suggestion = await AgentSuggestion.create({
             ticketId,
             predictedCategory: classification.predictedCategory,
@@ -111,7 +107,7 @@ export const triageTicket = async (ticketId) => {
             modelInfo: { provider: 'stub', model: 'keyword-v1.1', promptVersion: '1.1', latencyMs },
         });
 
-        // Update the original ticket with the new info
+        
         ticket.agentSuggestionId = suggestion._id;
         ticket.category = classification.predictedCategory;
         await ticket.save();
