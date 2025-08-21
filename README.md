@@ -86,17 +86,17 @@ Create a new, empty folder on your computer for the application files.
 
 ### 2. Create `docker-compose.yml`
 
-Inside the new folder, create a file named `docker-compose.yml` and paste the following content. **Remember to replace `your-username` with your actual Docker Hub username.**
+Inside the new folder, create a file named `docker-compose.yml` and paste the following content.
 
 ```yaml
 services:
   client:
-    image: your-username/helpdesk-client:latest
+    image: sahil26102002/helpdesk-client:latest
     ports:
       - "5173:80"
 
   api:
-    image: your-username/helpdesk-api:latest
+    image: sahil26102002/helpdesk-api:latest
     ports:
       - "8080:8080"
     depends_on:
