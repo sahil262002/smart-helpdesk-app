@@ -32,7 +32,7 @@ Prerequisites
 Docker Desktop: You must have Docker and Docker Compose installed and running on your machine. You can download it from the Docker website.
 
 1. Set Up Environment Variables
-In the /backend directory, create a new file named .env. This file will store all your secret keys and configuration. Copy the content from .env.example or use the template below.
+In the /backend directory, create a new file named .env. This file will store all your secret keys and configuration.
 
 # backend/.env
 
