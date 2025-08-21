@@ -1,18 +1,18 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Smart Helpdesk Backend",
+  "description": "",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "jest": "^30.0.5",
     "nodemon": "^3.1.10",
-    "supertest": "^7.1.4"
+    "supertest": "^7.1.4",
+    "vitest": "^3.2.4"
   }
 }
