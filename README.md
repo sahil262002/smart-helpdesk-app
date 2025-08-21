@@ -28,7 +28,9 @@ The AI agent is a backend service that automates the initial handling of new sup
 
 ---
 
-## Getting Started
+## Getting Started (For Developers with Source Code)
+
+This section is for developers who want to build the application from the source code.
 
 ### Prerequisites
 
@@ -54,9 +56,138 @@ JWT_SECRET=your_super_secret_and_long_random_string_here
 STUB_MODE=true
 AUTO_CLOSE_ENABLED=true
 CONFIDENCE_THRESHOLD=0.75
-You must replace your_super_secret_and_long_random_string_here with your own secret key.2. Run the ApplicationFrom the root directory of the project (where the docker-compose.yml file is), run the following command:docker compose up --build
-This command will build the Docker images for the frontend and backend, download the MongoDB image, and start all three containers.3. Access the ApplicationOnce the containers are running, open your web browser and navigate to:http://localhost:51734. Seed the Database (Optional but Recommended)To populate the application with sample users, tickets, and knowledge base articles, open a new terminal window and run the following command from the project's root directory:docker compose exec api npm run seed
-After seeding, you can log in with the following sample accounts:User: user@example.com (password: 123456)Admin: admin@example.com (password: 123456)5. How to Stop the ApplicationTo stop all running containers, go to the terminal where docker compose up is running and press Ctrl + C.TestingThe project is set up with Vitest for both frontend and backend testing.To run backend tests:# From the /backend directory
-npm test
-To run frontend tests:# From the /frontend directory
-npm test
+```
+
+**You must replace `your_super_secret_and_long_random_string_here` with your own secret key.**
+
+### 2. Run the Application
+
+From the **root directory** of the project (where the `docker-compose.yml` file is), run the following command:
+
+```sh
+docker compose up --build
+```
+
+This command will build the Docker images from the source code, download the MongoDB image, and start all three containers.
+
+---
+
+## Running from Docker Hub (For End Users)
+
+This section is for users who want to run the application without needing the source code. This method pulls pre-built images directly from Docker Hub.
+
+### Prerequisites
+
+* **Docker Desktop:** You must have Docker and Docker Compose installed and running.
+
+### 1. Create a Project Folder
+
+Create a new, empty folder on your computer for the application files.
+
+### 2. Create `docker-compose.yml`
+
+Inside the new folder, create a file named `docker-compose.yml` and paste the following content. **Remember to replace `your-username` with your actual Docker Hub username.**
+
+```yaml
+services:
+  client:
+    image: your-username/helpdesk-client:latest
+    ports:
+      - "5173:80"
+
+  api:
+    image: your-username/helpdesk-api:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    env_file:
+      - ./.env
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+```
+
+### 3. Create `.env` file
+
+In the same folder, create a file named `.env` and paste the configuration below.
+
+```env
+# Server Port
+PORT=8080
+
+# This points to the mongo service defined in docker-compose.yml
+MONGO_URI=mongodb://mongo:27017/helpdesk
+
+# IMPORTANT: You must create your own long, random secret key
+JWT_SECRET=a-default-secret-key-that-should-be-changed
+
+# Agent Configuration
+STUB_MODE=true
+AUTO_CLOSE_ENABLED=true
+CONFIDENCE_THRESHOLD=0.75
+```
+
+### 4. Run the Application
+
+Open a terminal in the folder containing these two files and run:
+
+```sh
+docker compose up -d
+```
+
+Docker will now download the images from Docker Hub and start the application.
+
+---
+
+## Common Steps for Both Methods
+
+### Access the Application
+
+Once the containers are running, open your web browser and navigate to:
+**http://localhost:5173**
+
+### Seed the Database (Optional but Recommended)
+
+To populate the application with sample users and tickets, run the following command from your terminal:
+
+```sh
+docker compose exec api npm run seed
+```
+
+After seeding, you can log in with the following sample accounts:
+
+* **User:** `user@example.com` (password: `123456`)
+* **Admin:** `admin@example.com` (password: `123456`)
+
+### How to Stop the Application
+
+To stop all running containers, run the following command from your terminal:
+
+```sh
+docker compose down
+```
+
+---
+
+## Testing
+
+The project is set up with Vitest for both frontend and backend testing.
+
+* **To run backend tests:**
+
+  ```sh
+  # From the /backend directory
+  npm test
+  ```
+
+* **To run frontend tests:**
+
+  ```sh
+  # From the /frontend directory
+  npm test
