@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuthStore from '../store/authStore.js';
+import { useAuth } from '../context/AuthContext.js'; // <-- Import useAuth
 
 const AdminRoute = () => {
-    const { token, user } = useAuthStore((state) => state);
+    const { token, user } = useAuth(); // <-- Use the context hook
     
     if (!token) {
         return <Navigate to="/login" />;
@@ -13,7 +13,6 @@ const AdminRoute = () => {
         return <Navigate to="/" />;
     }
 
-    
     return <Outlet />;
 };
 

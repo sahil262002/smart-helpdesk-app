@@ -1,13 +1,11 @@
-
-
 import React, { useState } from 'react';
-import useAuthStore from '../store/authStore';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.js'; // <-- Import useAuth
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const login = useAuthStore((state) => state.login);
+  const { login } = useAuth(); // <-- Use the context hook
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,6 +18,7 @@ const LoginPage = () => {
     }
   };
 
+  // ... rest of the component remains the same
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
@@ -27,27 +26,11 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
-            <input 
-              id="email" 
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              placeholder="you@example.com" 
-              required 
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
-            />
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
           <div>
             <label htmlFor="password"className="block text-sm font-medium text-gray-700">Password</label>
-            <input 
-              id="password" 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              placeholder="••••••••" 
-              required 
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
-            />
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
           <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign in</button>
         </form>

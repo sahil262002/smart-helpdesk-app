@@ -1,11 +1,10 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuthStore from '../store/authStore.js';
+import { useAuth } from '../context/AuthContext.js'; // <-- Import useAuth
 
 const PrivateRoute = () => {
-    const { token } = useAuthStore((state) => state);
+    const { token } = useAuth(); // <-- Use the context hook
 
-    
     return token ? <Outlet /> : <Navigate to="/login" />;
 };
 

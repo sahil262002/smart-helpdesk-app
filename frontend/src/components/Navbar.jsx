@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import { useAuth } from '../context/AuthContext.js'; // <-- Import useAuth
 
 const Navbar = () => {
-    const { user, token, logout } = useAuthStore();
+    const { user, token, logout } = useAuth(); // <-- Use the context hook
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         navigate('/login');
     };
-
+    
+    // ... rest of the component remains the same
     return (
         <nav className="bg-gray-800 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
